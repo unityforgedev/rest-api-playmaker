@@ -1,15 +1,21 @@
 {
- "name": "Rest API Actions",
+  "name": "com.unityforge.restapiplaymaker",
+  "displayName": "Rest API Actions",
   "version": "1.0.1",
-  "author": "Unity Forge",
-  "status": "⚠UPDATE",
+  "unity": "2022.3",
+  "status": "preview",
   "description": "Essential Rest API related PlayMaker FSM actions",
-  "tags": ["PlayMaker", "API", "Action", "Unity"],
+  "keywords": ["PlayMaker", "API", "Action", "Unity"],
   "icon": "https://raw.githubusercontent.com/unityforgedev/rest-api-playmaker/refs/heads/main/rest-api-playmaker.png",
   "links": {
     "download": "https://github.com/unityforgedev/rest-api-playmaker/releases/download/rest-api-playmaker/rest-api-playmaker.unitypackage",
     "release" : "https://api.github.com/repos/unityforgedev/rest-api-playmaker/releases",
     "github": "https://github.com/unityforgedev/rest-api-playmaker",
     "documentation": "https://unityforge.gitbook.io/docs/playmaker/rest-api"
+  },
+    "author": {
+    "name": "Unity Forge",
+    "email": "sabit.hasan.business@gmail.com",
+    "url": "https://github.com/unityforgedev"
   }
 }
