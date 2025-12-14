@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "com.unityforge.restapiplaymaker": "git+https://github.com/unityforgedev/rest-api-playmaker.git"
-  }
-}
