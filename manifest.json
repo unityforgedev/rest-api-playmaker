@@ -1,8 +1,8 @@
 {
  "name": "Rest API Actions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Unity Forge",
-  "status": "stable",
+  "status": "⚠UPDATE",
   "description": "Essential Rest API related PlayMaker FSM actions",
   "tags": ["PlayMaker", "API", "Action", "Unity"],
   "icon": "https://raw.githubusercontent.com/unityforgedev/rest-api-playmaker/refs/heads/main/rest-api-playmaker.png",
