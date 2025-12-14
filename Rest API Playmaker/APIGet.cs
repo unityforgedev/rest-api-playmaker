@@ -417,11 +417,21 @@ namespace HutongGames.PlayMaker.Actions
             // Store COMPLETE response body
             if (!responseBody.IsNone)
             {
+                // Force clear first
+                responseBody.Value = "";
+                // Then set full response
                 responseBody.Value = response;
 
                 if (debugMode.Value)
                 {
+                    Debug.Log($"[API GET] Response to store length: {response.Length}");
                     Debug.Log($"[API GET] Stored response body length: {responseBody.Value.Length}");
+                    Debug.Log($"[API GET] Match: {responseBody.Value.Length == response.Length}");
+                    if (responseBody.Value.Length != response.Length)
+                    {
+                        Debug.LogError($"[API GET] STORAGE FAILED! Expected {response.Length}, got {responseBody.Value.Length}");
+                        Debug.LogError($"[API GET] Stored content: {responseBody.Value}");
+                    }
                 }
             }
 
