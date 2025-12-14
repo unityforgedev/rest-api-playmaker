@@ -1,4 +1,4 @@
-﻿/*
+/*
  * ═══════════════════════════════════════════════════════════════
  *                          UNITY FORGE
  *                    REST API Action Package
@@ -8,8 +8,6 @@
  * Github: https://github.com/unityforgedev
  * 
  */
-
-
 
 using UnityEngine;
 using System.Collections;
@@ -102,6 +100,10 @@ namespace HutongGames.PlayMaker.Actions
         [UIHint(UIHint.Variable)]
         public FsmString responseHeaders;
 
+        [Tooltip("Store response content length in bytes")]
+        [UIHint(UIHint.Variable)]
+        public FsmInt responseLength;
+
         [Title("JSON Parsing")]
         [Tooltip("Automatically parse JSON response")]
         public FsmBool autoParseJSON = false;
@@ -175,6 +177,7 @@ namespace HutongGames.PlayMaker.Actions
             errorMessage = null;
             responseTime = null;
             responseHeaders = null;
+            responseLength = null;
             autoParseJSON = false;
             jsonPath = null;
             parsedValue = null;
@@ -381,7 +384,25 @@ namespace HutongGames.PlayMaker.Actions
         private void HandleResponse(UnityWebRequest request)
         {
             int code = (int)request.responseCode;
-            string response = request.downloadHandler?.text ?? "";
+
+            // Get the FULL response text
+            string response = "";
+            if (request.downloadHandler != null)
+            {
+                response = request.downloadHandler.text;
+
+                // Store response length for debugging
+                if (!responseLength.IsNone)
+                {
+                    responseLength.Value = response.Length;
+                }
+
+                if (debugMode.Value)
+                {
+                    Debug.Log($"[API GET] Response length: {response.Length} characters");
+                    Debug.Log($"[API GET] Downloaded bytes: {request.downloadHandler.data?.Length ?? 0}");
+                }
+            }
 
             if (!statusCode.IsNone)
             {
@@ -393,9 +414,15 @@ namespace HutongGames.PlayMaker.Actions
                 statusMessage.Value = GetStatusMessage(code);
             }
 
+            // Store COMPLETE response body
             if (!responseBody.IsNone)
             {
                 responseBody.Value = response;
+
+                if (debugMode.Value)
+                {
+                    Debug.Log($"[API GET] Stored response body length: {responseBody.Value.Length}");
+                }
             }
 
             if (!responseHeaders.IsNone)
@@ -405,10 +432,12 @@ namespace HutongGames.PlayMaker.Actions
 
             if (logResponse.Value || debugMode.Value)
             {
-                Debug.Log($"[API GET] Response {code}: {response}");
+                // Only log first 500 chars to avoid console overflow
+                string logPreview = response.Length > 500 ? response.Substring(0, 500) + "..." : response;
+                Debug.Log($"[API GET] Response {code} (Length: {response.Length}): {logPreview}");
             }
 
-            // Parse JSON if requested
+            // Parse JSON if requested - but DON'T overwrite responseBody
             if (autoParseJSON.Value && !string.IsNullOrEmpty(response))
             {
                 ParseJSON(response);
@@ -518,15 +547,20 @@ namespace HutongGames.PlayMaker.Actions
             {
                 if (string.IsNullOrEmpty(jsonPath.Value))
                 {
-                    // Store full JSON
+                    // Store full JSON in parsedValue (responseBody already has it)
                     if (!parsedValue.IsNone)
                     {
                         parsedValue.Value = json;
+
+                        if (debugMode.Value)
+                        {
+                            Debug.Log($"[API GET] Parsed full JSON length: {parsedValue.Value.Length}");
+                        }
                     }
                 }
                 else
                 {
-                    // Simple JSON path extraction
+                    // Extract specific path
                     string value = ExtractJSONValue(json, jsonPath.Value);
                     if (!parsedValue.IsNone)
                     {
