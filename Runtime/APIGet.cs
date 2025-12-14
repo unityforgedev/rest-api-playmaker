@@ -384,19 +384,19 @@ namespace HutongGames.PlayMaker.Actions
         private void HandleResponse(UnityWebRequest request)
         {
             int code = (int)request.responseCode;
-
+            
             // Get the FULL response text
             string response = "";
             if (request.downloadHandler != null)
             {
                 response = request.downloadHandler.text;
-
+                
                 // Store response length for debugging
                 if (!responseLength.IsNone)
                 {
                     responseLength.Value = response.Length;
                 }
-
+                
                 if (debugMode.Value)
                 {
                     Debug.Log($"[API GET] Response length: {response.Length} characters");
@@ -421,7 +421,7 @@ namespace HutongGames.PlayMaker.Actions
                 responseBody.Value = "";
                 // Then set full response
                 responseBody.Value = response;
-
+                
                 if (debugMode.Value)
                 {
                     Debug.Log($"[API GET] Response to store length: {response.Length}");
@@ -561,7 +561,7 @@ namespace HutongGames.PlayMaker.Actions
                     if (!parsedValue.IsNone)
                     {
                         parsedValue.Value = json;
-
+                        
                         if (debugMode.Value)
                         {
                             Debug.Log($"[API GET] Parsed full JSON length: {parsedValue.Value.Length}");
